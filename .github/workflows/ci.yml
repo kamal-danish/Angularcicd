@@ -34,7 +34,8 @@ jobs:
 
       # 6️⃣ Build Angular app (only if tests pass)
       - name: Build Angular app
-        run: ng build --prod --base-href "https://kamal-danish.github.io/Angularcicd/"
+        run: ng build --configuration production --base-href "https://kamal-danish.github.io/Angularcicd/"
+        
 
       # 7️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
