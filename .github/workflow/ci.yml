@@ -1,4 +1,4 @@
-name: Angular CI/CD
+name: Angular CI/CD with Testing
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,11 +28,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 5️⃣ Build Angular app
+      # 5️⃣ Run unit tests
+      - name: Run Unit Tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+      # 6️⃣ Build Angular app (only if tests pass)
       - name: Build Angular app
         run: ng build --prod --base-href "https://kamal-danish.github.io/Angularcicd/"
 
-      # 6️⃣ Deploy to GitHub Pages
+      # 7️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
