@@ -1,4 +1,4 @@
-name: Angular CI
+name: Angular CI/CD
 
 on:
   push:
@@ -6,20 +6,35 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # 1️⃣ Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
 
+      # 3️⃣ Install Angular CLI globally
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      # 4️⃣ Install project dependencies
       - name: Install dependencies
         run: npm install
 
+      # 5️⃣ Build Angular app
       - name: Build Angular app
-        run: npm run build -- --configuration production
+        run: ng build --prod --base-href "https://kamal-danish.github.io/Angularcicd/"
+
+      # 6️⃣ Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/Angularcicd
